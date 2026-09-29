@@ -17,15 +17,16 @@ pipeline {
         }
 
         stage('Test') {
-        steps {
-            dir('python') {
-                sh '''
-                    pwd
-                    ls -la
-                    ls -la test
-                    ../.venv/bin/python --version
-                    ../.venv/bin/python -m unittest discover -s test -p "test_*.py" -v
-                '''
+            steps {
+                dir('python') {
+                    sh '''
+                        pwd
+                        ls -la
+                        ls -la test
+                        ../.venv/bin/python --version
+                        ../.venv/bin/python -m unittest discover -s test -p "test_*.py" -v
+                    '''
+                }
             }
         }
 
@@ -36,7 +37,7 @@ pipeline {
                     docker build -t ${NOMBRE_CONTENEDOR}:latest .
                 '''
             }
-        }
+        } }
 
         stage('Desplegar') {
             steps {
