@@ -23,14 +23,14 @@ pipeline {
                     pwd
                     ls -la
                     ls -la test
-                    ../.venv/bin/python --version
-                    ../.venv/bin/python -m unittest discover -s test/unitarias -p "test_*.py" -v
+                    .venv/bin/python --version
+                    .venv/bin/python -m unittest discover -s test/unitarias -p "test_*.py" -v
                 '''
                 
             }
         }
 
-        stage('Construir imagen') {
+       /* stage('Construir imagen') {
             steps {
                 sh '''
                     echo "Construyendo imagen Docker..."
@@ -56,6 +56,6 @@ pipeline {
                     echo "Despliegue completado."
                 '''
             }
-        }
+        }*/
     }
 }
