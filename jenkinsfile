@@ -8,19 +8,25 @@ pipeline {
     stages {
         stage('Instalar dependencias') {
             steps {
-                sh '''
-                python -m venv .venv
-                .venv/bin/pip install --upgrade pip
-                .venv/bin/pip install -r requirements.txt
-               '''
+                dir('python') {
+                    sh '''
+                        python -m venv .venv
+                        .venv/bin/pip install --upgrade pip
+                        .venv/bin/pip install -r requirements.txt
+                    '''
+                }
             }
         }
+
         stage('Test') {
             steps {
-                sh 'pwd'
-                sh 'ls -la'
-                sh 'ls -la test'
-                sh '.venv/bin/python -m unittest discover -s test -p "test_*.py" -v'
+                dir('python') {
+                    sh '''
+                        pwd
+                        ls -la
+                        .venv/bin/python --version
+                        .venv/bin/python -m unittest discover -s test -p "test_*.py" -v
+                    '''
                 }
             }
         }
