@@ -24,7 +24,7 @@ pipeline {
                     ls -la
                     ls -la test
                     ../.venv/bin/python --version
-                    ../.venv/bin/python -m unittest discover -s test -p "test_*.py" -v
+                    ../.venv/bin/python -m unittest discover -s test/unitarias -p "test_*.py" -v
                 '''
                 
             }
