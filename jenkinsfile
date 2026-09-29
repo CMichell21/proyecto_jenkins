@@ -1,0 +1,50 @@
+pipeline {
+    agent any
+
+    environment {
+        NOMBRE_CONTENEDOR="TRANSFORMAPI"
+    }
+
+    stages {
+
+        stage('Obtener codigo') {
+            steps {
+                git 'https://github.com/CMichell21/proyecto_jenkins.git'
+            }
+        }
+
+        stage('Test') {
+            steps {
+                sh 'python -m unittest discover -s test -p "test_*.py" -v'
+            }
+        }
+
+        stage('Construir imagen') {
+            steps {
+                sh '''
+                    echo "Construyendo imagen Docker..."
+                    docker build -t ${NOMBRE_CONTENEDOR}:latest .
+                '''
+            }
+        }
+
+        stage('Desplegar') {
+            steps {
+                sh '''
+                    echo "Deteniendo contenedor anterior si existe..."
+                    docker stop ${NOMBRE_CONTENEDOR} || true
+
+                    echo "Eliminando contenedor anterior si existe..."
+                    docker rm ${NOMBRE_CONTENEDOR} || true
+
+                    echo "Creando y ejecutando nuevo contenedor..."
+                    docker run -d \
+                        --name ${NOMBRE_CONTENEDOR} \
+                        ${NOMBRE_CONTENEDOR}:latest
+
+                    echo "Despliegue completado."
+                '''
+            }
+        }
+    }
+}
