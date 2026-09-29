@@ -17,13 +17,15 @@ pipeline {
         }
 
         stage('Test') {
-            steps {
-                    sh '''
-                        pwd
-                        ls -la
-                        .venv/bin/python --version
-                        .venv/bin/python -m unittest discover -s python/test -p "test_*.py" -v
-                    '''
+        steps {
+            dir('python') {
+                sh '''
+                    pwd
+                    ls -la
+                    ls -la test
+                    ../.venv/bin/python --version
+                    ../.venv/bin/python -m unittest discover -s test -p "test_*.py" -v
+                '''
             }
         }
 
